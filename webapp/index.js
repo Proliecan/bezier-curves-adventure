@@ -6,13 +6,13 @@ offset = {x: 100, y: 900};
 function drawCircle(x, y, radius, color) {
     context.fillStyle = color;
     context.beginPath();
-    context.arc(x, y, radius, 0, 2 * Math.PI);
+    context.arc(x + offset.x, y + offset.y, radius, 0, 2 * Math.PI);
     context.fill();
 }
 
 // Function to draw a point with label corrected for offset
 function drawPoint(x, y, label) {
-    drawCircle(x + offset.x, y + offset.y, 5, "red");
+    drawCircle(x, y, 5, "red");
     context.fillStyle = "#ffffff";
     context.font = "bold 12px sans-serif";
     context.fillText(label, x + offset.x + 10, y + offset.y - 10);
@@ -30,8 +30,8 @@ function drawLine(x1, y1, x2, y2, color) {
     context.strokeStyle = color;
     context.lineWidth = 3;
     context.beginPath();
-    context.moveTo(x1, y1);
-    context.lineTo(x2, y2);
+    context.moveTo(x1 + offset.x, y1 + offset.y);
+    context.lineTo(x2 + offset.x, y2 + offset.y);
     context.stroke();
 }
 
@@ -63,14 +63,15 @@ function drawGrid(color, stepx, stepy) {
 // Function to draw axis with an offset in x and y, arrows and scale
 function drawAxis(color, offsetX, offsetY, step) {
     // draw axis
-    drawLine(offsetX, 0, offsetX, canvas.height, color);
-    drawLine(0, offsetY, canvas.width, offsetY, color);
+    drawLine(0, 0 - offset.y, 0, canvas.height, color);
+    drawLine(0 - offset.x, 0, canvas.width, 0, color);
 
     // draw arrows
-    drawLine(offsetX, 0, offsetX - 10, 10, color);
-    drawLine(offsetX, 0, offsetX + 10, 10, color);
-    drawLine(canvas.width, offsetY, canvas.width - 10, offsetY - 10, color);
-    drawLine(canvas.width, offsetY, canvas.width - 10, offsetY + 10, color);
+    drawLine(0, 0 - offset.y, 10, 10 - offset.y, color);
+    drawLine(0, 0 - offset.y, -10, 10 - offset.y, color);
+    drawLine(canvas.width - offset.x, 0, canvas.width - 10 - offset.x, -10, color);
+    drawLine(canvas.width - offset.x, 0, canvas.width - 10 - offset.x, 10, color);
+
 
     // draw scale
     context.fillStyle = color;
@@ -145,7 +146,7 @@ function updateCanvas() {
 function drawLines(p) {
     // for each point except the last one draw a line to the next point
     for (var i = 0; i < p.length - 1; i++) {
-        drawLine(p[i].x + offset.x, p[i].y + offset.y, p[i+1].x + offset.x, p[i+1].y + offset.y, "#ffffff");
+        drawLine(p[i].x, p[i].y, p[i+1].x, p[i+1].y, "#ffffff");
     }
 }
 
