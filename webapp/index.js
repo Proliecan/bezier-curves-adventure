@@ -1,6 +1,12 @@
 var canvas = document.getElementById("canvas");
 var context = canvas.getContext("2d");
 offset = {x: 100, y: 600};
+let t = .5;
+
+// on reload
+window.onload = function() {
+    resetT();
+}
 
 // Function to draw a circle
 function drawCircle(x, y, radius, color) {
@@ -168,11 +174,21 @@ function color(i) {
     }
 }
 
+// get the t value adjusted for the slider
+function updateT() {
+    t = document.getElementById("t-value-slider").value / 1000;
+    updateCanvas();
+}
+
+// reset t value slider
+function resetT() {
+    document.getElementById("t-value-slider").value = 500;
+    updateT();
+}
+
 // Update canvas
 function updateCanvas() {
     initCanvas();
-    // drawLinesBetween(points[0]);
-    // drawPoints(points[0]);
 
     // for every set of points in points
     for (var i = 0; i < points.length; i++) {
@@ -181,7 +197,7 @@ function updateCanvas() {
         // draw points
         drawPoints(points[i], color(i));
         // lerp between points
-        points[i+1] = lerpMultiple(points[i], .5);
+        points[i+1] = lerpMultiple(points[i], t);
         // break if there are no more points to lerp
         if (points[i+1].length <= 1) {
             drawPoints(points[i+1], "yellow");

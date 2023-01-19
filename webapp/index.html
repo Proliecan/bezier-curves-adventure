@@ -11,7 +11,10 @@
 <body>
     <canvas id="canvas" onmousedown="addPoint(event)">
     </canvas>
-
+    
+    <div class="slidecontainer overlay">
+        <input type="range" min="0" max="1000" value="500" class="slider" id="t-value-slider" oninput="updateT()">
+    </div>
 
     <script src="index.js"></script>
     <script>
