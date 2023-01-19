@@ -1,6 +1,6 @@
 var canvas = document.getElementById("canvas");
 var context = canvas.getContext("2d");
-offset = {x: 100, y: 900};
+offset = {x: 100, y: 600};
 
 // Function to draw a circle
 function drawCircle(x, y, radius, color) {
@@ -11,17 +11,21 @@ function drawCircle(x, y, radius, color) {
 }
 
 // Function to draw a point with label corrected for offset
-function drawPoint(x, y, label) {
-    drawCircle(x, y, 5, "red");
-    context.fillStyle = "#ffffff";
+function drawPoint(x, y, label, color) {
+    // if no color is given use red
+    if (color == null) {
+        color = "red";
+    }
+    drawCircle(x, y, 5, color);
+    context.fillStyle = "white";
     context.font = "bold 12px sans-serif";
     context.fillText(label, x + offset.x + 10, y + offset.y - 10);
 }
 
 // Function to draw points
-function drawPoints(points) {
+function drawPoints(points, color) {
     for (var i = 0; i < points.length; i++) {
-        drawPoint(points[i].x, points[i].y, points[i].label);
+        drawPoint(points[i].x, points[i].y, points[i].label, color);
     }
 }
 
@@ -108,6 +112,7 @@ function initCanvas() {
 
 let count = 0;
 let points = [];
+points[0] = [];
 // mouse position
 function addPoint(e)
 {
@@ -125,7 +130,7 @@ function addPoint(e)
     /* do something with mouseX/mouseY */
     // new point object correcting for offset
     var point = {x: mouseX - offset.x, y: mouseY - offset.y, label: "A"+count};
-    points.push(point);
+    points[0].push(point);
     // draw point corrected for offset
     drawPoint(point.x + offset.x, point.y + offset.y, point.label);
     count++;
@@ -133,20 +138,55 @@ function addPoint(e)
     // update canvas
     updateCanvas();
 }
-
-let lerpPoints = [];
-// Update canvas
-function updateCanvas() {
-    initCanvas();
-    drawPoints(points);
-    drawLines(points);
-}
-
 // draw lines
-function drawLines(p) {
+function drawLinesBetween(p) {
     // for each point except the last one draw a line to the next point
     for (var i = 0; i < p.length - 1; i++) {
         drawLine(p[i].x, p[i].y, p[i+1].x, p[i+1].y, "#ffffff");
+    }
+}
+
+// lerp between two points
+function lerp(p1, p2, t) {
+    return {x: p1.x + (p2.x - p1.x) * t, y: p1.y + (p2.y - p1.y) * t, label: ""};
+}
+
+// lerp between multiple points at the same t value
+function lerpMultiple(p, t) {
+    let lerpset = [];
+    for (var i = 0; i < p.length - 1; i++) {
+        lerpset.push(lerp(p[i], p[i+1], t));
+    }
+    return lerpset;
+}
+
+// color from integer
+function color(i) {
+    switch (i) {
+        case 0: return "red";
+        default: return "lightgrey";
+    }
+}
+
+// Update canvas
+function updateCanvas() {
+    initCanvas();
+    // drawLinesBetween(points[0]);
+    // drawPoints(points[0]);
+
+    // for every set of points in points
+    for (var i = 0; i < points.length; i++) {
+        // draw lines between points
+        drawLinesBetween(points[i]);
+        // draw points
+        drawPoints(points[i], color(i));
+        // lerp between points
+        points[i+1] = lerpMultiple(points[i], .5);
+        // break if there are no more points to lerp
+        if (points[i+1].length <= 1) {
+            drawPoints(points[i+1], "yellow");
+            break;
+        }
     }
 }
 
