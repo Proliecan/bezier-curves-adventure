@@ -148,7 +148,7 @@ function addPoint(e)
 function drawLinesBetween(p) {
     // for each point except the last one draw a line to the next point
     for (var i = 0; i < p.length - 1; i++) {
-        drawLine(p[i].x, p[i].y, p[i+1].x, p[i+1].y, "#ffffff");
+        drawLine(p[i].x, p[i].y, p[i+1].x, p[i+1].y, "grey");
     }
 }
 
