@@ -8,6 +8,15 @@ window.onload = function() {
     resetT();
 }
 
+// reset everything
+function reset() {
+    resetT();
+    points = [];
+    points[0] = [];
+    count = 0;
+    initCanvas();
+}
+
 // Function to draw a circle
 function drawCircle(x, y, radius, color) {
     context.fillStyle = color;

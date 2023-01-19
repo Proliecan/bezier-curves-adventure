@@ -13,7 +13,12 @@
     </canvas>
     
     <div class="slidecontainer overlay">
-        <input type="range" min="0" max="1000" value="500" class="slider" id="t-value-slider" oninput="updateT()">
+        <!-- Control heading -->
+        <h1>Controls</h1>
+        <!-- t-value slider -->
+        <input type="range" min="0" max="1000" value="500" class="slider" id="t-value-slider" oninput="updateT()">\
+        <!-- reset button -->
+        <button class="reset-button" onclick="reset()">Reset</button>
     </div>
 
     <script src="index.js"></script>

@@ -1,6 +1,9 @@
 * {
     margin: 0;
     padding: 0;
+    /* text */
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 1em;
 }
 
 
@@ -30,6 +33,14 @@ html { overflow: hidden; }
     height: 100%; */
     background-color: rgba(0, 0, 0, 0.5);
     z-index: 100;
+}
+
+/* Heading in overlay */
+.overlay > h1 {
+    font-size: 2em;
+    color: white;
+    text-align: center;
+    margin: 1vh;
 }
 
 /* flat button filled with color */
